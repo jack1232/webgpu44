@@ -4,21 +4,23 @@ struct Uniforms {
     modelMatrix : mat4x4<f32>;               
     normalMatrix : mat4x4<f32>;            
 };
-[[binding(0), group(0)]] var<uniform> uniforms : Uniforms;
+@binding(0) @group(0) var<uniform> uniforms : Uniforms;
+
 struct Input {
-    [[location(0)]] position : vec4<f32>;
-    [[location(1)]] normal : vec4<f32>;
-    [[location(2)]] uv : vec2<f32>;
-    [[location(3)]] color : vec3<f32>;
+    @location(0) position : vec4<f32>;
+    @location(1) normal : vec4<f32>;
+    @location(2) uv : vec2<f32>;
+    @location(3) color : vec3<f32>;
 };
 struct Output {
-    [[builtin(position)]] Position : vec4<f32>;
-    [[location(0)]] vPosition : vec4<f32>;
-    [[location(1)]] vNormal : vec4<f32>;
-    [[location(2)]] vUV : vec2<f32>;
-    [[location(3)]] vColor : vec3<f32>;
+    @builtin(position) Position : vec4<f32>;
+    @location(0) vPosition : vec4<f32>;
+    @location(1) vNormal : vec4<f32>;
+    @location(2) vUV : vec2<f32>;
+    @location(3) vColor : vec3<f32>;
 };
-[[stage(vertex)]]
+
+@stage(vertex)
 fn vs_main(input: Input) -> Output {        
     var output: Output;        
     let mPosition:vec4<f32> = uniforms.modelMatrix * input.position; 
@@ -35,7 +37,7 @@ struct FragUniforms {
     lightPosition : vec4<f32>;   
     eyePosition : vec4<f32>;
 };
-[[binding(1), group(0)]] var<uniform> fragUniforms : FragUniforms;
+@binding(1) @group(0) var<uniform> fragUniforms : FragUniforms;
 
 struct LightUniforms {
     ambientIntensity: f32;
@@ -48,19 +50,19 @@ struct LightUniforms {
     isPhong: f32;
     isTwoSideLighting: f32;
 };
-[[binding(2), group(0)]] var<uniform> lightUniforms : LightUniforms;
-
-[[binding(3), group(0)]] var textureSampler : sampler;
-[[binding(4), group(0)]] var textureData : texture_2d<f32>;
+@binding(2) @group(0) var<uniform> lightUniforms : LightUniforms;
+@binding(3) @group(0) var textureSampler : sampler;
+@binding(4) @group(0) var textureData : texture_2d<f32>;
 
 struct FragInput {
-    [[location(0)]] vPosition : vec4<f32>;
-    [[location(1)]] vNormal : vec4<f32>;
-    [[location(2)]] vUV : vec2<f32>;
-    [[location(3)]] vColor : vec3<f32>;
+    @location(0) vPosition : vec4<f32>;
+    @location(1) vNormal : vec4<f32>;
+    @location(2) vUV : vec2<f32>;
+    @location(3) vColor : vec3<f32>;
 };
-[[stage(fragment)]]
-fn fs_main(input: FragInput) -> [[location(0)]] vec4<f32> {
+
+@stage(fragment)
+fn fs_main(input: FragInput) -> @location(0) vec4<f32> {
     let textureColor:vec3<f32> = (textureSample(textureData, textureSampler, input.vUV)).rgb;
     let N:vec3<f32> = normalize(input.vNormal.xyz);                
     let L:vec3<f32> = normalize(fragUniforms.lightPosition.xyz - input.vPosition.xyz);     
