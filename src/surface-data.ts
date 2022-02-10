@@ -48,6 +48,7 @@ export const ParametricSurfaceData = (f:any, umin:number, umax:number, vmin:numb
 
     let pp0:vec2, pp1:vec2, pp2:vec2, pp3:vec2;
     let uv = [] as any;
+    let uv1 = [] as any;
 
     for(let i = 0; i < nu - 1; i++){
         for(let j = 0; j < nv - 1; j++){
@@ -67,13 +68,17 @@ export const ParametricSurfaceData = (f:any, umin:number, umax:number, vmin:numb
             pp3 = puv[i][j+1];
             let uvData = CreateQuadUV(pp0, pp1, pp2, pp3);
             uv.push(uvData.flat());
+
+            // uv1 data
+            uv1.push(0,0, 1,0, 1,1, 1,1, 0,1, 0,0);
         }
     }
     return{
         vertexData: new Float32Array(vertex.flat()),
         normalData: new Float32Array(normal.flat()),
         colorData: new Float32Array(color.flat()),
-        uvData: new Float32Array(uv.flat())
+        uvData: new Float32Array(uv.flat()),
+        uv1Data: new Float32Array(uv1.flat())
     };
 };
 
